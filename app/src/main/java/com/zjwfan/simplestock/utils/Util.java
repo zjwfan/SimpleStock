@@ -3,6 +3,7 @@ package com.zjwfan.simplestock.utils;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -104,7 +105,7 @@ public class Util {
         Log.w("ZJWFAN", "Notification: " + text);
         if (!config.isNotification())
             return;
-
+        context.sendBroadcast(new Intent("com.zjwfan.simplestock.stock.notification"));
         NotificationCompat.Builder nBuilder =
                 new NotificationCompat.Builder(context);
         nBuilder.setSmallIcon(R.mipmap.ic_launcher);

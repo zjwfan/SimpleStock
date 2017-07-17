@@ -15,9 +15,9 @@ android {
         applicationId "com.zjwfan.simplestock"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 26
-        versionName "0.2.6"
-        //
+        versionCode 27
+        versionName "0.2.7"
+        //1.优化通知频率 2.优化成交量设置hint提示内容
     }
     buildTypes {
         release {

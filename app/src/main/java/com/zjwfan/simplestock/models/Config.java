@@ -18,7 +18,7 @@ public class Config {
     private final static String SHARE_PRE_RED_GOAL = "stock_switch_goal_color";
     private final static String SHARE_PRE_GOAL_DISPLAY = "stock_switch_goal_display";
     private final static String SHARE_PRE_RED_GOAL_PERCENT = "example_list_goal_percent_notice";
-    private final static int StockLargeTrade_ = 10000000;
+    private final static int StockLargeTrade_ = 100000000;
     public final static int TIMER_MAX_COUNT = 10000000;
 
     private boolean mIsNotification;

@@ -86,7 +86,6 @@ public class StockItemPopupWindow extends PopupWindow {
         });
 
 
-
         editTextGoalPrice.setHint(stock.now);
         buttonOkLowPrice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,8 +107,8 @@ public class StockItemPopupWindow extends PopupWindow {
             }
         });
 
+        editTextVolume.setHint(stock.goalVolumeHigh + "/" + stock.goalVolume + " || " + stock.buy[1] + "/" + stock.sale[1]); //成交额： 改为  旧上限/旧下限  || 当前买1/卖1
 
-        editTextVolume.setHint(stock.goalVolumeHigh + "/" + stock.goalVolume); //成交额和 改为  旧上限/旧下限
         buttonOkLowVolume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -12,6 +12,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.CalendarContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -26,6 +27,7 @@ import com.zjwfan.simplestock.models.StockSQLiteOpenHelper;
 import com.zjwfan.simplestock.network.MySingleton;
 import com.zjwfan.simplestock.utils.Util;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Timer;
@@ -39,6 +41,9 @@ public class StockService extends Service {
     private static HashMap<String, Stock> StocksMap = new HashMap<String, Stock>();
     private SQLiteDatabase mStockDB;
     private Config mConfig;
+    private boolean isVibrate;
+    private long preNotifiTime = 0L;
+    private int mNotifiCount = 0;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -57,7 +62,6 @@ public class StockService extends Service {
                                 loge("onErrorResponse()" + error.getLocalizedMessage());
                             }
                         });
-                        loge("mConfig.getTimerCountSett() = " + mConfig.getTimerCountSett());
                         sendEmptyMessageDelayed(99, mConfig.getTimerCountSett());
                     } else {
                         long value = Stock.getTradeStartTime();
@@ -77,7 +81,7 @@ public class StockService extends Service {
         }
     };
 
-    private BroadcastReceiver mReloadDataBaseReceiver, mSeetingsChangeReceiver;
+    private BroadcastReceiver mReloadDataBaseReceiver, mSeetingsChangeReceiver, mNotificationReceiver;
 
     public static void stopService(Context context) {
         Intent intent = new Intent(context, StockService.class);
@@ -111,6 +115,9 @@ public class StockService extends Service {
         }
         if (mSeetingsChangeReceiver != null) {
             this.unregisterReceiver(mSeetingsChangeReceiver);
+        }
+        if (mNotificationReceiver != null) {
+            this.unregisterReceiver(mNotificationReceiver);
         }
         super.onDestroy();
     }
@@ -152,6 +159,8 @@ public class StockService extends Service {
     private void initSeeting() {
         mConfig = new Config();
         mConfig = Config.loadConfigFromSharedPre(this);
+        isVibrate = mConfig.isVibrate();
+        mNotifiCount = 0;
     }
 
     private void initBroadcastReceiver() {
@@ -162,7 +171,6 @@ public class StockService extends Service {
                 initStockIds();
             }
         };
-
         this.registerReceiver(mReloadDataBaseReceiver, new IntentFilter("com.zjwfan.simplestock.reload.stockids"));
 
         mSeetingsChangeReceiver = new BroadcastReceiver() {
@@ -172,12 +180,31 @@ public class StockService extends Service {
                 initSeeting();
             }
         };
-
         this.registerReceiver(mSeetingsChangeReceiver, new IntentFilter("com.zjwfan.simplestock.reload.settings"));
+
+        mNotificationReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e("ZJWFAN", "onReceive  onReceive  com.zjwfan.simplestock.stock.notification");
+                if (isVibrate) {
+
+                    if ((Calendar.getInstance().getTimeInMillis() - preNotifiTime) > 100000) {
+                        mNotifiCount = 0;
+                    }
+
+                    if ((Calendar.getInstance().getTimeInMillis() - preNotifiTime) > 1000 || mNotifiCount < 3) {
+                        mNotifiCount++;
+                        mConfig.setVibrate(true);
+                        preNotifiTime = Calendar.getInstance().getTimeInMillis();
+                    } else {
+                        mConfig.setVibrate(false);
+                    }
+                }
+
+            }
+        };
+        this.registerReceiver(mNotificationReceiver, new IntentFilter("com.zjwfan.simplestock.stock.notification"));
     }
-
-
-
 
 
 }

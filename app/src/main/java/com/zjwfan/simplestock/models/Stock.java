@@ -133,7 +133,6 @@ public class Stock {
 
     public static void refreshStocks(Context context, HashSet<String> stockIds, Response.Listener<String> listener, Response.ErrorListener errorListener) {
 
-        Log.e("ZJWFAN", "refreshStocks()");
         StringBuilder ids = new StringBuilder();
         for (String id : stockIds) {
             ids.append(id);
@@ -241,14 +240,12 @@ public class Stock {
         Double queryResult;
 
         queryResult = stocksMap.get(stock.id).goalPrice;
-        Log.i("ZJWFAN", "False:queryResult = " + queryResult);
         if (queryResult > nowPrice && nowPrice > 0.1 && queryResult != 0.0) {
 
             Util.sendNotifation(context, config, Integer.parseInt(sid), stock.name, stock.now);
         }
 
         queryResult = stocksMap.get(stock.id).goalPriceHigh;
-        Log.i("ZJWFAN", "True:queryResult = " + queryResult);
         if (queryResult < nowPrice && nowPrice > 0.1 && queryResult != 0.0) {
 
             Util.sendNotifation(context, config, Integer.parseInt(sid), stock.name, stock.now);
