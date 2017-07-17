@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_settings"
+        android:title="@string/action_settings" />
+    <item
+        android:id="@+id/item_refresh"
+        android:title="@string/action_refresh" />
+    <item
+        android:id="@+id/item_improt_database"
+        android:title="@string/action_import_database" />
+    <item
+        android:id="@+id/item_export_database"
+        android:title="@string/action_export_database" />
+    <item
+        android:id="@+id/item_quick_delete"
+        android:title="@string/action_quick_delete" />
+    <item
+        android:id="@+id/item_start_service"
+        android:title="@string/action_start_service" />
+    <item
+        android:id="@+id/item_stop_service"
+        android:title="@string/action_stop_service" />
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="Search"/>
+</menu>

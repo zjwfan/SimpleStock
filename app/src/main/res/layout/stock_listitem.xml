@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stock_listItem"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="5"
+    android:background="#ffffff"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/stock_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FEC6BC"
+        android:textSize="15sp"
+        android:text="@string/stock_delete"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="7dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/stock_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="绿盟科技"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/stock_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="300369"
+            android:textColor="#000000"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/stock_goal_high"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="27.6"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/stock_now"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="33.33"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/stock_goal"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="17.6"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/stock_percent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="2%"
+        android:textColor="#000000"/>
+
+
+</LinearLayout>

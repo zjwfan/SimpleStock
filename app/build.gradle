@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        zjwfan {
+            keyAlias 'zjwfan'
+            keyPassword 'zjwstc'
+            storeFile file('C:/Users/Administrator/Dropbox/zjwfan_apk_key.jks')
+            storePassword 'zjwstc'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.zjwfan.simplestock"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 26
+        versionName "0.2.6"
+        //
+    }
+    buildTypes {
+        release {
+
+            // apk name def
+            android.applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFile = new File(output.outputFile.parent, "SimpleStock" + "-" + buildType.name + "-v" +
+                            defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk" );
+                }
+            }
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.volley:volley:1.0.0'
+    compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
+}

@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">SimpleStock</string>
+    <string name="action_settings">设置</string>
+    <string name="action_delete">删除</string>
+    <string name="action_refresh">刷新</string>
+    <string name="action_start_service">开启服务</string>
+    <string name="action_stop_service">停止服务</string>
+    <string name="action_import_database">导入数据</string>
+    <string name="action_export_database">导出数据</string>
+    <string name="action_quick_delete">编辑列表</string>
+    <string name="action_quit_quick_delete">退出编辑列表</string>
+    <string name="stock_delete">删除</string>
+    <string name="button_add_label">添加</string>
+    <string name="stock_name_title">名称</string>
+    <string name="stock_now_title">最新</string>
+    <string name="stock_increase_percent_title">涨幅</string>
+    <string name="stock_increase_title">涨跌</string>
+    <string name="stock_gap_title">差值</string>
+    <string name="stock_sh_name">上证指数</string>
+    <string name="stock_sz_name">深圳成指</string>
+    <string name="stock_chuang_name">创业板指</string>
+    <string name="stock_buy">买</string>
+    <string name="stock_sell">卖</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_general">普通设置</string>
+    <string name="pref_title_social_recommendations">红绿色显示</string>
+    <string name="pref_description_social_recommendations">开关股票列表的红绿色涨跌区分</string>
+    <string name="pref_title_social_recommendations_goal">目标价提醒</string>
+    <string name="pref_description_social_recommendations_goal">股票价格接近目标价时的红色字体颜色标识</string>
+    <string name="pref_title_social_recommendations_goal_display">目标价显示</string>
+    <string name="pref_description_social_recommendations_goal_display">是否将目标价显示在主列表</string>
+    <string name="pref_title_display_name">成交量提醒</string>
+    <string name="pref_default_display_name">1000000</string>
+    <string name="pref_title_add_friends_to_messages">目标价是当前价的提醒百分比设置</string>
+    <string-array name="pref_example_list_titles">
+        <item>98%</item>
+        <item>95%</item>
+        <item>92%</item>
+        <item>90%</item>
+        <item>85%</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>98</item>
+        <item>95</item>
+        <item>92</item>
+        <item>90</item>
+        <item>85</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">数据同步</string>
+
+    <string name="pref_title_sync_frequency">数据更新频率设置</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>1 seconds</item>
+        <item>2 seconds</item>
+        <item>5 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minutes</item>
+        <item>5 minutes</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>30</item>
+        <item>60</item>
+        <item>300</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">消息通知</string>
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_title_new_message_notifications">消息通知</string>
+
+    <string name="pref_title_ringtone">铃声</string>
+    <string name="pref_ringtone_silent">静音</string>
+
+    <string name="pref_title_vibrate">震动</string>
+</resources>
