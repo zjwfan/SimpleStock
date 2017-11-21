@@ -3,61 +3,63 @@ package com.zjwfan.simplestock.services;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.CalendarContract;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.zjwfan.simplestock.R;
 import com.zjwfan.simplestock.models.Config;
 import com.zjwfan.simplestock.models.Stock;
 import com.zjwfan.simplestock.models.StockSQLiteOpenHelper;
-import com.zjwfan.simplestock.network.MySingleton;
-import com.zjwfan.simplestock.utils.Util;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.R.attr.value;
 
 public class StockService extends Service {
-    private final static String TAG = "ZJWFAN";
     private static HashSet<String> StockIds = new HashSet<String>();
     private static HashMap<String, Stock> StocksMap = new HashMap<String, Stock>();
     private SQLiteDatabase mStockDB;
     private Config mConfig;
     private boolean isVibrate;
     private long preNotifiTime = 0L;
+
     private int mNotifiCount = 0;
-    private Handler mHandler = new Handler(){
+
+    static class MyHandler extends Handler {
+        WeakReference<Context> contextWeakReference;
+
+        MyHandler(Context context) {
+            contextWeakReference = new WeakReference<Context>(context);
+        }
+
         @Override
         public void handleMessage(Message msg) {
+            final Context context = contextWeakReference.get();
+            final StockService stockService;
+            if (context == null) return;
+            if (context instanceof StockService) {
+                stockService = (StockService) context;
+            } else {
+                Logger.e("error context is not StockService.");
+                return;
+            }
             switch (msg.what) {
                 case 99:
                     if (Stock.isTradeTime()) {
-                        Stock.refreshStocks(getApplicationContext(), StockIds, new Response.Listener<String>() {
+                        Stock.refreshStocks(context, StockIds, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Stock.sinaResponseStockInfo(StockService.this, mStockDB, mConfig, response, StockIds, StocksMap);
+                                Stock.sinaResponseStockInfo(context, stockService.mStockDB, stockService.mConfig, response, StockIds, StocksMap);
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -66,7 +68,7 @@ public class StockService extends Service {
                                 Logger.e("onErrorResponse()" + error.getLocalizedMessage());
                             }
                         });
-                        sendEmptyMessageDelayed(99, mConfig.getTimerCountSett());
+                        sendEmptyMessageDelayed(99, stockService.mConfig.getTimerCountSett());
                     } else {
                         long value = Stock.getTradeStartTime();
                         sendEmptyMessageDelayed(99, value);
@@ -81,19 +83,21 @@ public class StockService extends Service {
             }
             super.handleMessage(msg);
         }
-    };
+    }
+
+    private MyHandler mHandler = new MyHandler(this);
 
     private BroadcastReceiver mReloadDataBaseReceiver, mSeetingsChangeReceiver, mNotificationReceiver;
 
     public static void stopService(Context context) {
         Intent intent = new Intent(context, StockService.class);
-        Log.e("ZJWFAN", "StockService: stopService");
+        Logger.e("StockService: stopService");
         context.stopService(intent);
     }
 
     public static void startService(Context context) {
         Intent intent = new Intent(context, StockService.class);
-        Log.e("ZJWFAN", "StockService: startService");
+        Logger.e("StockService: startService");
         context.startService(intent);
     }
 
@@ -155,7 +159,7 @@ public class StockService extends Service {
         StocksMap = StockSQLiteOpenHelper.queryStockInfoFromStockDB(mStockDB);
 
         if (StockIds.size() != StocksMap.size())
-            Log.e(TAG, "StockIds.size() != StocksMap.size()" + "at 496846466");
+            Logger.e("StockIds.size() != StocksMap.size()" + "at 496846466");
 
     }
 
