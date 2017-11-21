@@ -20,6 +20,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.zjwfan.simplestock.R;
 import com.zjwfan.simplestock.models.Config;
 import com.zjwfan.simplestock.models.Stock;
@@ -59,16 +63,14 @@ public class StockService extends Service {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 error.printStackTrace();
-                                loge("onErrorResponse()" + error.getLocalizedMessage());
+                                Logger.e("onErrorResponse()" + error.getLocalizedMessage());
                             }
                         });
                         sendEmptyMessageDelayed(99, mConfig.getTimerCountSett());
                     } else {
                         long value = Stock.getTradeStartTime();
                         sendEmptyMessageDelayed(99, value);
-                        loge("value = " + value);
                         double dValue = value/1000/60;
-                        loge("value/1000/60 = " + dValue);
                     }
 
                     break;
@@ -95,21 +97,27 @@ public class StockService extends Service {
         context.startService(intent);
     }
 
+    private void initLog() {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .tag("ZJWFAN")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .build();
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+    }
 
     @Override
     public void onCreate() {
-        loge("onCreate()");
         initDatabase();
         initStockIds();
         initSeeting();
         initBroadcastReceiver();
+        initLog();
         mHandler.sendEmptyMessageDelayed(99, 500);
         super.onCreate();
     }
 
     @Override
     public void onDestroy() {
-        loge("onDestroy()");
         if (mReloadDataBaseReceiver != null) {
             this.unregisterReceiver(mReloadDataBaseReceiver);
         }
@@ -127,7 +135,6 @@ public class StockService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        loge("onStartCommand()");
 //        mHandler.sendEmptyMessageDelayed(99, 500);
 //        Stock.setAlarm(this, mConfig.getTimerCountSett(), Stock.getTradeDuraTime());
         return super.onStartCommand(intent, flags, startId);
@@ -152,9 +159,6 @@ public class StockService extends Service {
 
     }
 
-    private void loge(String message) {
-        Log.e("ZJWFAN", message);
-    }
 
     private void initSeeting() {
         mConfig = new Config();
@@ -167,7 +171,6 @@ public class StockService extends Service {
         mReloadDataBaseReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("ZJWFAN", "onReceive  onReceive  com.zjwfan.simplestock.reload.stockids");
                 initStockIds();
             }
         };
@@ -176,7 +179,6 @@ public class StockService extends Service {
         mSeetingsChangeReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("ZJWFAN", "onReceive  onReceive  com.zjwfan.simplestock.reload.settings");
                 initSeeting();
             }
         };
@@ -185,7 +187,6 @@ public class StockService extends Service {
         mNotificationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("ZJWFAN", "onReceive  onReceive  com.zjwfan.simplestock.stock.notification");
                 if (isVibrate) {
 
                     if ((Calendar.getInstance().getTimeInMillis() - preNotifiTime) > 100000) {
